@@ -39,6 +39,7 @@ namespace game
         {
             tolik.y += tolik.gravityValue;
             Invalidate();
+            int num = 2;
         }
 
         private void OnPaint(object sender, PaintEventArgs e)
