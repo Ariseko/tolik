@@ -17,7 +17,7 @@ namespace game
         Player tolik;
         TheBarrel barrel;
         Ground ground;
-        int gravity;
+        float gravity;
 
         public Form1()
         {
@@ -30,16 +30,22 @@ namespace game
         {
             tolik = new Player(200, 190);
             barrel = new TheBarrel(340, 225);
-            timer1.Interval = 50;
+            timer1.Interval = 1;
             timer1.Tick += new EventHandler(update);
             timer1.Start();
         }
 
         private void update(object sender, EventArgs e)
         {
-            tolik.y += tolik.gravityValue;
+            if (tolik.gravityValue != 0.1f)
+            {
+                tolik.gravityValue += 0.005f; 
+            }
+
+            gravity += tolik.gravityValue;
+            tolik.y += gravity;
             Invalidate();
-            int num = 2;
+
         }
 
         private void OnPaint(object sender, PaintEventArgs e)
@@ -57,5 +63,10 @@ namespace game
         }
         private void Form1_Load(object sender, EventArgs e) {   }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            gravity = 0;
+            tolik.gravityValue = -0.15f;
+        }
     }
 }

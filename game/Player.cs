@@ -8,12 +8,12 @@ namespace tolik
     class Player
     {
 
-        public int x;
-        public int y;
+        public float x;
+        public float y;
         public int size;
         public Image tolikImage;
 
-        public int gravityValue;
+        public float gravityValue;
 
         public Player(int x, int y)
         {
@@ -21,7 +21,7 @@ namespace tolik
             this.x = x;
             this.y = y;
             size = 90;
-            gravityValue = 2;
+            gravityValue = 0.2f;
         }
 
     }
