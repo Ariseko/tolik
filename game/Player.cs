@@ -21,7 +21,7 @@ namespace tolik
             this.x = x;
             this.y = y;
             size = 90;
-            gravityValue = 0.2f;
+            gravityValue = 0.1f;
         }
 
     }
