@@ -18,10 +18,13 @@ namespace game
         TheBarrel barrel;
         Ground ground;
         Sans sans;
+        Background back;
         float gravity;
         int counter=0;
         int seconds=0;
         bool isEnemyAlive=true;
+        int direction = 0;
+        int timeChecker;
         Random rnd = new Random();
         
 
@@ -35,8 +38,9 @@ namespace game
 
         public void Init()
         {
-            tolik = new Player(100, 190);
-            barrel = new TheBarrel(340, 225);
+            tolik = new Player(100, 490);
+            barrel = new TheBarrel(340, 525);
+            back = new Background(0, 0);
             timer1.Interval = 10;
             timer1.Tick += new EventHandler(update);
             timer1.Start();
@@ -46,22 +50,39 @@ namespace game
 
         private void update(object sender, EventArgs e)
         {
-           if(tolik.gravityValue != 0.1f)
-           {
+            counter++;
+            if(tolik.gravityValue != 0.1f)
+            {
                 tolik.gravityValue += 0.005f;
                 gravity += tolik.gravityValue;
                 tolik.y += gravity;
-           }
-            
+            }
+
+            if(timeChecker == counter + 20)
+            {
+                tolik.y = 190;
+                gravity = 0;
+                tolik.gravityValue = 0;
+            }
+
+            label1.Text = counter.ToString();
 
             MoveTolik();
-            MoveSans();
+            //MoveSans();
             Invalidate();
         }
 
         private void MoveTolik()
         {
-            tolik.x += 1;
+            if(direction == 1)
+            {
+                tolik.x += 5;
+            }
+            else if (direction == 2)
+            {
+                tolik.x -= 5;
+            }
+            
         }
 
         private void MoveSans()
@@ -69,38 +90,39 @@ namespace game
             sans.x -= 1;
         }
 
-        private void CreateEnemy(object sender, PaintEventArgs e)
+        private void CreateEnemy()
         {
-            Graphics graphics = e.Graphics;
            
         }
 
         private void OnPaint(object sender, PaintEventArgs e)
         {
             Graphics graphics = e.Graphics;
-
-            graphics.DrawImage(tolik.tolikImage, tolik.x, tolik.y, tolik.size, tolik.size);
+            graphics.DrawImage(back.backImage, back.x, back.y, back.sizeX, back.sizeY);
             graphics.DrawImage(barrel.barrelImage, barrel.x, barrel.y, barrel.sizeX, barrel.sizeY);
+            graphics.DrawImage(tolik.tolikImage, tolik.x, tolik.y, tolik.size, tolik.size);
+            
 
             for (int i = 0; i < 20; i++)
             {
-                ground = new Ground(i * 128, 175);
+                ground = new Ground(i * 128, 475);
                 graphics.DrawImage(ground.groundImage, ground.x, ground.y, ground.sizeX, ground.sizeY);
             }
 
             int num = rnd.Next(0, 1000);
 
-            if (num > 500 && isEnemyAlive == true)
+            if (num > 900)
             {
-                sans = new Sans(440, 225);
+                sans = new Sans(440, 525);
                 graphics.DrawImage(sans.sansImage, sans.x, sans.y, sans.sizeX, sans.sizeY);
                 isEnemyAlive = false;
             }
         }
         private void Form1_Load(object sender, EventArgs e) {   }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e) //jump
         {
+            timeChecker = counter;
             gravity = 0;
             tolik.gravityValue = -0.125f;
         }
@@ -113,6 +135,22 @@ namespace game
         private void label2_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button2_Click(object sender, EventArgs e) //right
+        {
+            direction = 1;
+        }
+
+        private void button3_Click(object sender, EventArgs e) //left
+        {
+            direction = 2;
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+            float num = tolik.y;
+            label3.Text = num.ToString();
         }
     }
 }
