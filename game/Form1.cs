@@ -20,9 +20,10 @@ namespace game
         Sans sans;
         Background back;
         float gravity;
-        int counter=0;
-        int seconds=0;
-        bool isEnemyAlive=true;
+        int counter = 0;
+        int seconds = 0;
+        bool isEnemyAlive = true;
+        float tracking;
         int direction = 0;
         int timeChecker;
         Random rnd = new Random();
@@ -50,7 +51,9 @@ namespace game
 
         private void update(object sender, EventArgs e)
         {
+
             counter++;
+            tracking = tolik.x;
             if(tolik.gravityValue != 0.1f)
             {
                 tolik.gravityValue += 0.005f;
@@ -65,11 +68,20 @@ namespace game
                 tolik.gravityValue = 0;
             }
 
-            label1.Text = counter.ToString();
+           
 
             MoveTolik();
+            onGround();
             //MoveSans();
             Invalidate();
+        }
+
+        private void onGround()
+        {
+            if (ground.y + 25 < tolik.y)
+            {
+                tolik = new Player(tracking, 490);
+            }
         }
 
         private void MoveTolik()
@@ -82,7 +94,18 @@ namespace game
             {
                 tolik.x -= 5;
             }
-            
+            else if (direction == 3)
+            {
+                tolik.y -= 5;
+            }
+            else if (direction == 4)
+            {
+                tolik.y += 5;
+            }
+            else if (direction == 5)
+            {
+
+            }
         }
 
         private void MoveSans()
@@ -97,11 +120,16 @@ namespace game
 
         private void OnPaint(object sender, PaintEventArgs e)
         {
+
             Graphics graphics = e.Graphics;
+
             graphics.DrawImage(back.backImage, back.x, back.y, back.sizeX, back.sizeY);
             graphics.DrawImage(barrel.barrelImage, barrel.x, barrel.y, barrel.sizeX, barrel.sizeY);
             graphics.DrawImage(tolik.tolikImage, tolik.x, tolik.y, tolik.size, tolik.size);
-            
+
+
+           
+
 
             for (int i = 0; i < 20; i++)
             {
@@ -110,6 +138,8 @@ namespace game
             }
 
             int num = rnd.Next(0, 1000);
+
+            
 
             if (num > 900)
             {
@@ -151,6 +181,21 @@ namespace game
         {
             float num = tolik.y;
             label3.Text = num.ToString();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            direction = 3;
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            direction = 4;
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            direction = 5;
         }
     }
 }
